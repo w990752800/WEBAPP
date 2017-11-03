@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #box{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+    </style>
+
+</head>
+<body>
+<div id="box"></div>
+</body>
+<script>
+var oBox = document.getElementById('box');
+    oBox.addEventListener('touchend',function(){
+        alert(1)
+    });
+</script>
+</html>
