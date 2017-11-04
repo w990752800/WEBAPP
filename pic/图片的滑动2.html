@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <script>
+        document.getElementsByTagName('html')[0].style.fontSize = window.screen.width / 10 + 'px';
+    </script>
+    <style>
+        body {
+            margin: 0;
+            font-size: 0.4rem;
+        }
+        .picWrapIn {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .picWrapMain {
+            width: 40rem;
+            overflow: hidden;
+        }
+
+        .picWrapMain a {
+            float: left;
+            width: 10rem;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+        }
+
+        .picWrapMain a img {
+            display: block;
+            width: 100%;
+            vertical-align: top;
+        }
+
+        .ctrlSpan {
+            height: 0.3rem;
+            text-align: center;
+        }
+
+        .ctrlSpan span {
+            display: inline-block;
+            width: 0.3rem;
+            height: 0.3rem;
+            border-radius: 0.15rem;
+            border: 1px solid #000;
+            box-sizing: border-box;
+            margin: 0 0.1rem;
+        }
+        .ctrlSpan .active{
+            background-color: #f60;
+        }
+    </style>
+</head>
+<body>
+<div class="picWrap">
+    <div class="picWrapIn">
+        <div class="picWrapMain" id="picWrapMain">
+            <a data-href="baidu.com" ontouchmove="this.s=1" target="_blank" ontouchend="this.s || window.open(this.dataset.href),this.s=0">
+                <img src="img2/1.jpg" alt="">
+            </a>
+            <a data-href="www.vip.com" ontouchmove="this.s=1" ontouchend="this.s || window.open(this.dataset.href),this.s=0">
+                <img src="img2/2.jpg" alt="">
+            </a>
+            <a data-href="www.qq.com" ontouchmove="this.s=1" ontouchend="this.s || window.open(this.dataset.href),this.s=0">
+                <img src="img2/3.jpg" alt="">
+            </a>
+            <a data-href="www.163.com" ontouchmove="this.s=1" ontouchend="this.s || window.open(this.dataset.href),this.s=0">
+                <img src="img2/4.jpg" alt="">
+            </a>
+        </div>
+    </div>
+    <div class="ctrlSpan" id="ctrlSpan">
+        <span class="active"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<script>
+    var picWrapMain = document.getElementById('picWrapMain');
+    var ctrlSpans = document.getElementById('ctrlSpan').children;
+    var iScroll = 0;
+    var startX = 0;
+    var startScroll = 0;
+    var iNow = 0;
+    document.addEventListener('touchmove',function(e){
+        e.preventDefault();
+    });
+    picWrapMain.addEventListener('touchstart',function(e){
+        startX = e.changedTouches[0].pageX;
+        startScroll = iScroll;
+    });
+    picWrapMain.addEventListener('touchmove',function(e){
+        var iDis = e.changedTouches[0].pageX - startX;
+        iScroll = iDis + startScroll;
+        toStyle();
+    });
+    picWrapMain.addEventListener('touchend',function(e){
+        var iDis = e.changedTouches[0].pageX - startX;
+        iScroll = iDis + startScroll;
+        iNow = -iScroll/window.screen.width;
+        iNow=iNow%1<0.3?Math.floor(iNow):Math.ceil(iNow);
+        if(iNow<0){
+            iNow=0;
+        }
+        if(iNow>ctrlSpans.length -1){
+            iNow = ctrlSpans.length -1;
+        }
+        iScroll = -iNow*window.screen.width;
+        for(var i=0;i<ctrlSpans.length;i++){
+            if(i!=iNow){
+                ctrlSpans[i].className = '';
+            }else{
+                ctrlSpans[i].className = 'active';
+            }
+        }
+        picWrapMain.style.WebKitTransition = picWrapMain.style.transition =  '0.3s';
+        toStyle();
+    });
+
+    function toStyle(){
+        picWrapMain.style.WebKitTransform = picWrapMain.style.transform = 'translateX('+ iScroll +'px)';
+    }
+</script>
+</body>
+</html>
